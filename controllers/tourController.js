@@ -8,17 +8,22 @@ exports.aliasTopTours = async (req,res,next) =>{
     next();
 };
 
+exports.aliasTopTours = async (req,res,next) =>{
+    req.query.limit = '5';
+    req.query.sort = '-ratingsAverage,price';
+    req.query.fields = 'name,price,ratingsAverage,difficulty,'
+    next();
+};
+
 exports.getAllTours =async (req,res)=>{
     try{
-        // APIFeatures in utils doc with codes
         // EXECUTE Query
         const features = new APIFeatures(Tour.find(),req.query)
-        .filter()
-        .sort()
+        .filter().
+        sort()
         .limitFields()
         .paginate();
         const tours =await features.query;
-    // Outputs.
     res.status(200).json({
     status: 'Succes', 
     results : tours.length,
