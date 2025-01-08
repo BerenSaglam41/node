@@ -116,9 +116,11 @@ exports.deleteTour =async (req,res)=>{
 exports.getTourStats = async (req,res) => {
     try{
         const stats =await Tour.aggregate([
+            // Shows greater than 4.5 
             {
                 $match: { ratingsAverage : { $gte : 4.5 }}
             },
+            // Group by difficulty level and gives others stats
             {
                 $group: {
                      _id : {$toUpper : '$difficulty'},
@@ -129,9 +131,13 @@ exports.getTourStats = async (req,res) => {
                      minPrice : { $min : '$price'},
                      maxPrice : { $max : '$price'},
                 }
-            },
+            }, 
             {
                 $sort : { avgPrice : 1}
+            },
+            // Shows which is the not easy
+            {
+                $match :  { _id :{ $ne : 'EASY'}}
             }
         ]);
         res.status(200).json({
