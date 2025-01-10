@@ -34,7 +34,15 @@ const tourSchema = new mongoose.Schema({
         type:Number,
         required : [true,'A tour must have a price']
     },
-    priceDiscount : Number,
+    priceDiscount : {
+        type: Number,
+        validate : {
+            message : 'Discount price ({VALUE}) should be below regular price',
+            // this is only for creating new document
+            validator : function(val){
+                return val < this.price;
+        }
+    },
     summary : {
         type : String,
         trim : true,
