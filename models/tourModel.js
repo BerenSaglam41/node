@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
+const validtor = require('validator');
 
 // turlar için klasik belirlenen şemayı hazırla
 const tourSchema = new mongoose.Schema({
@@ -7,7 +8,10 @@ const tourSchema = new mongoose.Schema({
         type: String,
         required : [true,'A tour must have a name'],
         unique : true,
-        trim : true
+        trim : true,
+        maxlength : [40,'A tour name must have less or equal then 40 characters'],
+        minlength : [10,'A tour name must have more or equal then 10 characters'],
+        // validate : [validator.isAlpha,'Tour name must only contain characters']
     },
     slug : String,
     duration : {
@@ -20,7 +24,11 @@ const tourSchema = new mongoose.Schema({
     },
     difficulty : {
         type : String,
-        required : [true,'A tour must have a difficulty']
+        required : [true,'A tour must have a difficulty'],
+        enum : {
+            values : ['easy','medium','difficult'],
+            message : 'Difficulty is either : easy, medium, difficult'
+        }
     },
     ratingsAverage : {
         type: Number,
@@ -37,10 +45,11 @@ const tourSchema = new mongoose.Schema({
     priceDiscount : {
         type: Number,
         validate : {
-            message : 'Discount price ({VALUE}) should be below regular price',
-            // this is only for creating new document
-            validator : function(val){
-                return val < this.price;
+                message : 'Discount price ({VALUE}) should be below regular price',
+                // this is only for creating new document
+                validator : function(val){
+                    return val < this.price;
+            }
         }
     },
     summary : {
@@ -66,7 +75,8 @@ const tourSchema = new mongoose.Schema({
         type : Boolean,
         default : false
     }
-},{
+},
+{
     // virtual için aratırken görüntü verir
     toJSON : { virtuals : true},
     toObject : { virtual : true }
@@ -106,6 +116,13 @@ tourSchema.post(/^find/,function(docs,next){
     next();
 });
 
+// AGGREGATION MIDDLEWARE
+tourSchema.pre('aggregate', function(next) {
+    // that code will hide secret tours in aggregation on stats
+    this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+    console.log(this.pipeline());
+    next();
+  });
 
 // turlar için hazırlanan şemayı Tour adında bi model oluşturup ona kaydet
 const Tour = mongoose.model('Tour', tourSchema);
