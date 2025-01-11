@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrpyt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     name : {
@@ -34,12 +35,17 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.pre('save',function(next){
+userSchema.pre('save',async function(next){
+        // Only run this function if password was actually modified
     if(!this.isModified('password')) return next();
-    else{
-
-    }
+        // this code makes password hashed
+    this.password =await bcrpyt.hash(this.password,12);
+        // Delete passwordConfirm field
+    this.passwordConfirm = undefined;
+    next();
 });
+
+
 
 const User = mongoose.model('User',userSchema);
 module.exports = User;
