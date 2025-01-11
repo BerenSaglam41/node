@@ -46,6 +46,7 @@ userSchema.pre('save',async function(next){
     this.password =await bcrpyt.hash(this.password,12);
         // Delete passwordConfirm field
     this.passwordConfirm = undefined;
+
     next();
 });
 
@@ -54,6 +55,7 @@ userSchema.methods.correctPassword = async function(candidatePassword,userPasswo
 }
 
 userSchema.methods.changedPasswordAfter = function(JWTTimestamp){
+    console.log(this.passwordChangedAt);
     if(this.passwordChangedAt){
         const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000);
         return JWTTimestamp < changedTimestamp;
