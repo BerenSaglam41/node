@@ -3,7 +3,8 @@ const router = express.Router();
 const userControllers = require('./../controllers/userController');
 const authController = require('./../controllers/authController');
 
-
+router.route('/updateMyPassword')
+    .patch(authController.protect, authController.updatePassword);
 router.route('/login')
     .post(authController.login);
 router.route('/signup')
