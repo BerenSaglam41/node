@@ -64,6 +64,7 @@ exports.protect = catchAsync(async (req,res,next)=>{
     if(currentUser.changedPasswordAfter(decoded.iat)){
         return next(new AppError('User recently changed password! Please log in again',401));
     }
+    // updating req.user data to currentusersdata for using on the next functions
     req.user = currentUser;
     next();
 });
@@ -129,12 +130,13 @@ exports.resetPassword = catchAsync(async (req,res,next) => {
     user.passwordConfirm = req.body.passwordConfirm;
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
-    await user.save();
     // 3) Update changedPasswordAt property for the user
-
+     await user.save();
+    
     // 4) Log the user in, send JWT
     createSendToken(user,201,res);
 });
+
 
 exports.updatePassword = catchAsync(async (req,res,next)=>{
     // 1) Get user from collection

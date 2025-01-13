@@ -45,7 +45,12 @@ const userSchema = new mongoose.Schema({
         type : Date
     },
     passwordResetToken : String,
-    passwordResetExpires : Date
+    passwordResetExpires : Date,
+    active : {
+        type : Boolean,
+        default : true,
+        select : false
+    }
 });
 
 userSchema.pre('save',async function(next){
@@ -67,10 +72,19 @@ userSchema.pre('save',function(next){
     next();
 });
 
+// for When we find anything that code block to not active users.
+userSchema.pre(/^find/,function(next){
+    // this points to the current query
+    this.find({active : {$ne : false}});
+    next();
+});
+
+// This code checks is that password is true to current password
 userSchema.methods.correctPassword = async function(candidatePassword,userPassword){
     return await bcrpyt.compare(candidatePassword,userPassword);
 }
 
+// This is for check to Token expire time
 userSchema.methods.changedPasswordAfter = function(JWTTimestamp){
     if(this.passwordChangedAt){
         const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000);
@@ -79,12 +93,12 @@ userSchema.methods.changedPasswordAfter = function(JWTTimestamp){
     return false;
 };
 
+// When we create new pass this code changes tokens
 userSchema.methods.createPasswordResetToken = function(){
     const resetToken = crypto.randomBytes(32).toString('hex');  
     this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
     console.log({resetToken},this.passwordResetToken);
     this.passwordResetExpires = Date.now() + 10*60*1000;
-
     return resetToken;
 };
 

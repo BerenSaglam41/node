@@ -3,8 +3,14 @@ const router = express.Router();
 const userControllers = require('./../controllers/userController');
 const authController = require('./../controllers/authController');
 
+
+router.route('/deleteMe')
+    .delete(authController.protect,userControllers.deleteMe);
+router.route('/updateMe')
+    .patch(authController.protect,userControllers.updateMe)
 router.route('/updateMyPassword')
-    .patch(authController.protect, authController.updatePassword);
+    .patch(authController.protect,
+        authController.updatePassword);
 router.route('/login')
     .post(authController.login);
 router.route('/signup')
