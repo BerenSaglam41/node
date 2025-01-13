@@ -3,14 +3,21 @@ const app = express();
 // for security
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 // **
 const morgan = require('morgan');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const appError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController')
+const hpp = require('hpp');
 // ***********************************
 
+// This is for use req.body as a json 
+app.use(express.json({
+    limit : '10kb'
+}));
 
 // 1)       GLOBAL Middlewares
 
@@ -26,15 +33,21 @@ app.use('/api',limiter);
 app.use(helmet());
 
 // DATA sanitization against NoSQL query injection
+app.use(mongoSanitize({
+    replaceWith: '', // Potansiyel saldırı karakterlerini alt çizgi ile değiştirir
+}));
+// This code takes sanitizes mission if it dont work
 
 // DATA sanitization against XSS
-
-
-
-// Body parser , reading data from body into req.body
-app.use(express.json({
-    limit : '10kb'
+app.use(xss());
+// PREVEnt parameter pollution
+app.use(hpp({
+    whitelist : [
+        'duration','ratingsQuantity','ratingsAverage','maxGroupSize','difficulty','price'
+    ]
 }));
+// Body parser , reading data from body into req.body
+
 
 // for devolopment login
 if(process.env.NODE_ENV === 'development'){
