@@ -1,5 +1,7 @@
+// ************************Server *******************
 const express = require('express');
 const app = express();
+
 // for security
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
@@ -47,7 +49,6 @@ app.use(hpp({
     ]
 }));
 // Body parser , reading data from body into req.body
-
 
 // for devolopment login
 if(process.env.NODE_ENV === 'development'){

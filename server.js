@@ -1,5 +1,3 @@
-
-
 const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' }); // Doğru format
 const app = require('./app');
