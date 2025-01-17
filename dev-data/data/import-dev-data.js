@@ -1,8 +1,11 @@
 const dotenv = require('dotenv');
+dotenv.config({ path: '../../config.env' }); // Dosyanın en başında olmalı
+
 const mongoose = require('mongoose');
 const fs = require('fs');
-const Tour =  require('./../../models/tourModel');
-dotenv.config({ path: './../../config.env' }); // Doğru format
+const Tour = require('./../../models/tourModel');
+
+console.log(process.env.DATABASE); // undefined dönerse, yol hatalıdır
 
 // db ile sunucuya bağlancağımız linki ayarlamak. config.env de yazan bilgiler ile
 const DB = process.env.DATABASE.replace('<PASSWORD>',process.env.DATABASE_PASSWORD);
@@ -13,7 +16,7 @@ mongoose.connect(DB, {
 });
 
 // Json dosyalarını okuma
-const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8'));
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'));
 
 // import data to db
 const importData = async() =>{
