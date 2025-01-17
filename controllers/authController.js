@@ -6,6 +6,7 @@ const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
 const crypto = require('crypto');
 
+
 // Creating token with using id
 const signToken = id =>{
     return jwt.sign({id} ,process.env.JWT_SECRET,{ expiresIn : process.env.JWT_EXPIRES_IN});
@@ -29,6 +30,7 @@ const createSendToken = catchAsync(async(user,statusCode,res) =>{
         }
     });
 });
+
 
 // Sign up with body data
 exports.signup = catchAsync(async (req,res,next) => {
