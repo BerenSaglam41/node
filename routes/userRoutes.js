@@ -3,14 +3,7 @@ const router = express.Router();
 const userControllers = require('./../controllers/userController');
 const authController = require('./../controllers/authController');
 
-router.get('/me',authController.protect,userControllers.getMe,userControllers.getUser);
-router.route('/deleteMe')
-    .delete(authController.protect,userControllers.deleteMe);
-router.route('/updateMe')
-    .patch(authController.protect,userControllers.updateMe)
-router.route('/updateMyPassword')
-    .patch(authController.protect,
-        authController.updatePassword);
+
 router.route('/login')
     .post(authController.login);
 router.route('/signup')
@@ -19,6 +12,23 @@ router.route('/forgotPassword')
     .post(authController.forgotPassword);
 router.route('/resetPassword/:token')
     .patch(authController.resetPassword);
+
+    // PROTECT ALL ROUTES AFTER THIS
+router.use(authController.protect);
+
+router.get('/me',
+    userControllers.getMe,
+    userControllers.getUser);
+router.route('/deleteMe')
+    .delete(userControllers.deleteMe);
+router.route('/updateMe')
+    .patch(userControllers.updateMe)
+router.route('/updateMyPassword')
+    .patch(authController.updatePassword);
+
+    // AFTER THIS CODE ONLY FOR ADMINS
+router.use(authController.restrictTo('admin'));
+
 router.route('/')
     .get(userControllers.getAllUsers)
     .post(userControllers.createUser);
