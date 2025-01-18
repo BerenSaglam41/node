@@ -7,4 +7,5 @@ router.route('/')
     .get(reviewControllers.getAllReviews)
     .post(authController.protect,authController.restrictTo('user'),reviewControllers.createReview);
 
+router.route('/:id').delete(reviewControllers.deleteReview);
 module.exports = router;
