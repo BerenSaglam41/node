@@ -106,7 +106,11 @@ const tourSchema = new mongoose.Schema({
             type : mongoose.Schema.ObjectId,
             ref : 'User'
         }
-    ]
+    ],
+    reviews : [{
+        type : mongoose.Schema.ObjectId,
+        ref : 'review'
+    }]
 },
 {
     // virtual için aratırken görüntü verir
@@ -118,6 +122,13 @@ const tourSchema = new mongoose.Schema({
 // virtual aratırken görünür kaydedlmez
 tourSchema.virtual('durationWeeks').get(function (){
     return this.duration/7;
+});
+
+// Virtual populate for reviews 
+tourSchema.virtual('review',{
+    ref : 'Review',
+    foreignField : 'tour',
+    localField : '_id'
 });
 
 // Document Middleware runs before the .save() and .create() methods
