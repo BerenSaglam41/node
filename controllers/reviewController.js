@@ -1,23 +1,9 @@
 const User = require('../models/userModel');
-const appError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
-const Tour = require('../models/tourModel');
 const Review = require('../models/reviewModel');
 const factory = require('./handlerFactory');
 
-exports.getAllReviews = catchAsync(async(req,res,next) =>{
-    let filter = {};
-    if(req.params.tourId) filter = {tour : req.params.tourId};
-
-    const reviews =await Review.find(filter);
-    res.status(200).json({
-        status : 'Succes',
-        results : reviews.length,
-        data : {
-            reviews
-        }
-    })
-});
+exports.getAllReviews = factory.getAll(Review);
 
 // This for create review for logined acc 
 exports.setTourReviewIds = (req,res,next)=>{

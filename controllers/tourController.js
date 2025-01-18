@@ -1,6 +1,4 @@
-const appError = require('../utils/appError');
 const Tour = require('./../models/tourModel');
-const APIFeatures = require('./../utils/apiFeatures');
 const catchAsync = require('./../utils/catchAsync');
 const factory = require('./handlerFactory');
 
@@ -12,23 +10,7 @@ exports.aliasTopTours = async (req,res,next) =>{
     next();
 };
 
-exports.getAllTours =catchAsync(async (req,res,next)=>{
-        // EXECUTE Query
-        const features = new APIFeatures(Tour.find(),req.query)
-        .filter().
-        sort()
-        .limitFields()
-        .paginate();
-        const tours =await features.query;
-    res.status(200).json({
-    status: 'Succes', 
-    results : tours.length,
-    data:{
-        tours
-    }
-    });
-});
-
+exports.getAllTours =factory.getAll(Tour);
 exports.getTour = factory.getOne(Tour,{ path : 'review'});
 exports.createTour = factory.createoOne(Tour);
 exports.updateTour = factory.updateOne(Tour);
