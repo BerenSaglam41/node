@@ -3,6 +3,7 @@ const router = express.Router();
 const userControllers = require('./../controllers/userController');
 const authController = require('./../controllers/authController');
 
+router.get('/me',authController.protect,userControllers.getMe,userControllers.getUser);
 router.route('/deleteMe')
     .delete(authController.protect,userControllers.deleteMe);
 router.route('/updateMe')

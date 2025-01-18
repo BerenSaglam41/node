@@ -11,15 +11,9 @@ const filterObj = (obj , ...allowedFields) =>{
     return newObj;
 };
 
-exports.getAllUsers = async (req,res,next)=>{
-    const users = await User.find({});
-    res.status(201).json({
-        status : 'success', 
-        results : users.length,
-        data : {
-            users
-        }
-    });
+exports.getMe = (req,res,next)=>{
+    req.params.id = req.user.id;
+    next()
 };
 
 exports.updateMe = catchAsync (async(req,res,next) => {
@@ -32,7 +26,7 @@ exports.updateMe = catchAsync (async(req,res,next) => {
     const filteredBody = filterObj(req.body,'name','email');
     const updatedUser =await User.findByIdAndUpdate(req.user.id,filteredBody,{
         new : true,
-        runValidators : true
+        runValidators : true 
     })
     res.status(200).json({
         status : 'Succes',
@@ -48,15 +42,16 @@ exports.deleteMe = catchAsync(async(req,res,next)=>{
     })
 });
 
-exports.getUser = factory.getOne(User);
 exports.createUser = (req,res) =>{
     res.status(500).json({
         status : 'error',
-        message : 'This route is not ! defiend please use /signup instead'
+        message : 'This route is not  defiend! please use /signup instead'
     })
 }
 // do not update password with this
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
+exports.getAllUsers = factory.getAll(User);
+exports.getUser = factory.getOne(User);
 
 

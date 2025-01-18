@@ -53,6 +53,7 @@ const userSchema = new mongoose.Schema({
     }
 });
 
+
 userSchema.pre('save',async function(next){
         // Only run this function if password was actually modified
     if(!this.isModified('password')) return next();
@@ -63,7 +64,6 @@ userSchema.pre('save',async function(next){
 
     next();
 });
-
 
 // If password is changed, then passwordChangedAt field is updated
 userSchema.pre('save',function(next){
