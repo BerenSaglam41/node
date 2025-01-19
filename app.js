@@ -12,6 +12,7 @@ const morgan = require('morgan');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const viewRouter = require('./routes/viewRoutes');
 const appError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController')
 const hpp = require('hpp');
@@ -70,16 +71,7 @@ app.use((req, res, next) => {
 });
 
 // 3) Routes
-app.get('/',(req,res)=>{
-    // takes base file in views 
-    res.status(200).render('base',{
-        tour : 'The Forest Hiker',
-        user : 'Jonas'
-    });
-});
-app.get('/overwiev',(req,res)=>{
-    res.status(200).render('overview');
-});
+app.use('/',viewRouter);
 app.use('/api/v1/tours',tourRouter);
 app.use('/api/v1/users',userRouter);
 app.use('/api/v1/reviews',reviewRouter);
