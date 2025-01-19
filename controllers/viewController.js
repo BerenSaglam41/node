@@ -13,8 +13,14 @@ exports.getoverView = catchAsync(async(req,res)=>{
     });
 });
 
-exports.getTour = (req,res)=>{
+exports.getTour = async(req,res)=>{
+    const tour = await Tour.findOne({slug : req.params.slug}).populate({
+        path : 'review',
+        select : 'review rating user'
+    });
+    console.log(tour);
     res.status(200).render('tour',{
-        title : 'The Forest Hiker Tour'
+        title : 'The Forest Hiker Tour',
+        tour
     });
 };
