@@ -77,6 +77,9 @@ app.get('/',(req,res)=>{
         user : 'Jonas'
     });
 });
+app.get('/overwiev',(req,res)=>{
+    res.status(200).render('overview');
+});
 app.use('/api/v1/tours',tourRouter);
 app.use('/api/v1/users',userRouter);
 app.use('/api/v1/reviews',reviewRouter);
