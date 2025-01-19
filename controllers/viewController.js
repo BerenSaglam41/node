@@ -15,7 +15,7 @@ exports.getoverView = catchAsync(async(req,res)=>{
 
 exports.getTour = async(req,res)=>{
     const tour = await Tour.findOne({slug : req.params.slug}).populate({
-        path : 'review',
+        path : 'reviews',
         select : 'review rating user'
     });
     console.log(tour);
