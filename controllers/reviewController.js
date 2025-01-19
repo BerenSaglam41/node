@@ -3,7 +3,6 @@ const catchAsync = require('../utils/catchAsync');
 const Review = require('../models/reviewModel');
 const factory = require('./handlerFactory');
 
-exports.getAllReviews = factory.getAll(Review);
 
 // This for create review for logined acc 
 exports.setTourReviewIds = (req,res,next)=>{
@@ -12,6 +11,7 @@ exports.setTourReviewIds = (req,res,next)=>{
     if(!req.body.user) req.body.user = req.user.id;
     next();
 };
+exports.getAllReviews = factory.getAll(Review);
 exports.getReview = factory.getOne(Review);
 exports.createReview = factory.createoOne(Review);
 exports.updateReview = factory.updateOne(Review);

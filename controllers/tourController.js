@@ -12,7 +12,7 @@ exports.aliasTopTours = async (req,res,next) =>{
 };
 
 exports.getAllTours =factory.getAll(Tour);
-exports.getTour = factory.getOne(Tour,{ path : 'review'});
+exports.getTour = factory.getOne(Tour,{ path : 'reviews'});
 exports.createTour = factory.createoOne(Tour);
 exports.updateTour = factory.updateOne(Tour);
 exports.deleteTour = factory.deleteOne(Tour)

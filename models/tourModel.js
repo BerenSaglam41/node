@@ -109,11 +109,7 @@ const tourSchema = new mongoose.Schema({
             type : mongoose.Schema.ObjectId,
             ref : 'User'
         }
-    ],
-    reviews : [{
-        type : mongoose.Schema.ObjectId,
-        ref : 'Review'
-    }]
+    ]
 },
 {
     // virtual için aratırken görüntü verir
@@ -132,7 +128,7 @@ tourSchema.virtual('durationWeeks').get(function (){
 });
 
 // Virtual populate for reviews 
-tourSchema.virtual('review',{
+tourSchema.virtual('reviews',{
     ref : 'Review',
     foreignField : 'tour',
     localField : '_id'
