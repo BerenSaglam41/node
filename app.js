@@ -1,7 +1,7 @@
 // ************************Server *******************
 const express = require('express');
 const app = express();
-
+const path = require('path');
 // for security
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
@@ -17,12 +17,19 @@ const globalErrorHandler = require('./controllers/errorController')
 const hpp = require('hpp');
 // ***********************************
 
+app.set('view engine','pug');
+app.set('views',path.join(__dirname,'views'));
+
+
+// 1)       GLOBAL Middlewares
+
+//  serve static files such as HTML, CSS, JavaScript, images, and other assets from the /public directory.
+app.use(express.static(path.join(__dirname,'public')));
+
 // This is for use req.body as a json 
 app.use(express.json({
     limit : '10kb'
 }));
-
-// 1)       GLOBAL Middlewares
 
 // for limit server requests for attacks.
 const limiter = rateLimit({
@@ -56,9 +63,6 @@ if(process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'));
 }
 
-//  serve static files such as HTML, CSS, JavaScript, images, and other assets from the /public directory.
-app.use(express.static(`${__dirname}/public`));
-
 app.use((req, res, next) => {
     req.requestTime = new Date().toISOString();
     // console.log(req.headers);
@@ -66,6 +70,10 @@ app.use((req, res, next) => {
 });
 
 // 3) Routes
+app.get('/',(req,res)=>{
+    // takes base file in views 
+    res.status(200).render('base');
+});
 app.use('/api/v1/tours',tourRouter);
 app.use('/api/v1/users',userRouter);
 app.use('/api/v1/reviews',reviewRouter);
