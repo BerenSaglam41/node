@@ -2,6 +2,7 @@ doctype html
 html
     head 
         block head
+            meta(http-equiv="Content-Security-Policy", content="script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;")
             meta(charset='UTF-8')
             meta(name='viewport' content='width=device-width, initial-scale=1.0')
             link(rel='stylesheet' href='/css/style.css')
@@ -19,5 +20,5 @@ html
 
         // FOOTER
         include _footer
-
-
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js")
+        script(src='/js/login.js')

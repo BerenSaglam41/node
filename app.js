@@ -16,6 +16,8 @@ const viewRouter = require('./routes/viewRoutes');
 const appError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController')
 const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 // ***********************************
 
 app.use((req, res, next) => {
@@ -31,6 +33,17 @@ app.use((req, res, next) => {
 app.set('view engine','pug');
 app.set('views',path.join(__dirname,'views'));
 
+app.use((req, res, next) => {
+    res.setHeader(
+        'Content-Security-Policy',
+        "script-src 'self' https://cdnjs.cloudflare.com https://api.mapbox.com; " +
+        "style-src 'self' https://api.mapbox.com; " +
+        "img-src 'self' https://api.mapbox.com; " +
+        "font-src 'self' https://api.mapbox.com; " +
+        "object-src 'none';"
+    );
+    next();
+});
 
 // 1)       GLOBAL Middlewares
 
@@ -42,6 +55,17 @@ app.use(express.json({
     limit : '10kb'
 }));
 
+
+const cookieOptions = {
+    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRATION * 24 * 60 * 60 * 1000), // Çerezin geçerlilik süresini hesaplar
+    httpOnly: true, // Çerezi yalnızca HTTP istekleriyle erişilebilir yapar (JavaScript tarafından okunamaz)
+    sameSite: process.env.NODE_ENV === 'development' ? 'Lax' : 'None', // Geliştirme ve üretim ortamlarına göre sameSite politikası
+};
+app.use(cookieParser());
+app.get('/set-cookie', (req, res) => {
+    res.cookie('myCookie', 'cookieValue',cookieOptions  );
+    res.send('Cookie has been set!');
+});
 // for limit server requests for attacks.
 const limiter = rateLimit({
     max : 100,
@@ -59,7 +83,7 @@ app.use(mongoSanitize({
 }));
 // This code takes sanitizes mission if it dont work
 
-// DATA sanitization against XSS
+// DATA sanitization against XSS 
 app.use(xss());
 // PREVEnt parameter pollution
 app.use(hpp({
@@ -68,7 +92,10 @@ app.use(hpp({
     ]
 }));
 // Body parser , reading data from body into req.body
-
+app.use(cors({
+    origin: 'http://localhost:3000', // İstemci adresiniz
+    credentials: true, // Çerezlerin gönderilmesine izin ver
+}));
 // for devolopment login
 if(process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'));
@@ -76,10 +103,11 @@ if(process.env.NODE_ENV === 'development'){
 
 app.use((req, res, next) => {
     req.requestTime = new Date().toISOString();
-    // console.log(req.headers);
+    console.log(req.cookies);
+        // console.log(req.headers);
     next();    
 });
-
+app.use(cors())
 // 3) Routes
 app.use('/',viewRouter);
 app.use('/api/v1/tours',tourRouter);
