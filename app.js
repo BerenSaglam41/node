@@ -86,7 +86,6 @@ app.use(hpp({
     ]
 }));
 
-app.use(compression());
 
 // for devolopment login
 if(process.env.NODE_ENV === 'development'){
