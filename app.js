@@ -18,6 +18,16 @@ const globalErrorHandler = require('./controllers/errorController')
 const hpp = require('hpp');
 // ***********************************
 
+app.use((req, res, next) => {
+    res.setHeader('Content-Security-Policy', 
+      "script-src 'self' https://api.mapbox.com; " + // Mapbox'a izin veriyoruz
+      "style-src 'self' https://api.mapbox.com; " +  // Mapbox stil dosyalarına da izin veriyoruz
+      "img-src 'self' https://api.mapbox.com; " +    // Mapbox resim dosyalarına izin veriyoruz
+      "font-src 'self' https://api.mapbox.com; " +   // Mapbox font dosyalarına izin veriyoruz
+      "object-src 'none';"
+    );
+    next();
+  });
 app.set('view engine','pug');
 app.set('views',path.join(__dirname,'views'));
 

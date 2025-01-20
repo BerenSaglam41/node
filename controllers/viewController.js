@@ -13,7 +13,7 @@ exports.getoverView = catchAsync(async(req,res)=>{
     });
 });
 
-exports.getTour = async(req,res)=>{
+exports.getTour = catchAsync(async(req,res,next)=>{
     const tour = await Tour.findOne({ slug: req.params.slug }).populate({
         path: 'reviews',
         fields: 'review rating user'
@@ -22,4 +22,10 @@ exports.getTour = async(req,res)=>{
         title : `${tour.name} Tour`,
         tour
     });
+});
+
+exports.getLoginForm  = async(req,res)=>{
+  res.status(200).render('login',{
+    title : 'Log into your account'
+  });
 };
