@@ -1,21 +1,21 @@
-const login = async(email, password) => {
+const login = async (email, password) => {
     console.log('Email:', email);
     console.log('Password:', password);
-    try{
+    try {
         const res = await axios({
-            method : 'POST',
-            url : 'http://localhost:3001/api/v1/users/login',
-            data : {
+            method: 'POST',
+            url: '/api/v1/users/login',
+            data: {
                 email,
-                password
-            }
+                password,
+            },
         });
         console.log(res);
-    }
-    catch(err){
+    } catch (err) {
         console.log(err.response.data);
     }
 };
+
 console.log("selam");
 document.querySelector('.form').addEventListener('submit', e => {
     e.preventDefault(); 

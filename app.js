@@ -12,6 +12,7 @@ const morgan = require('morgan');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const compression = require('compression');
 const viewRouter = require('./routes/viewRoutes');
 const appError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController')
@@ -20,18 +21,16 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 // ***********************************
 
-app.use((req, res, next) => {
-    res.setHeader('Content-Security-Policy', 
-      "script-src 'self' https://api.mapbox.com; " + // Mapbox'a izin veriyoruz
-      "style-src 'self' https://api.mapbox.com; " +  // Mapbox stil dosyalarına da izin veriyoruz
-      "img-src 'self' https://api.mapbox.com; " +    // Mapbox resim dosyalarına izin veriyoruz
-      "font-src 'self' https://api.mapbox.com; " +   // Mapbox font dosyalarına izin veriyoruz
-      "object-src 'none';"
-    );
-    next();
-  });
+
 app.set('view engine','pug');
 app.set('views',path.join(__dirname,'views'));
+
+// Access-control-origin-header => *
+app.use(cors());
+
+//This is for more 'complex' routes other than GET and POST - This will handle PATCH and DELETE  etc..
+// We can also do this for individual routes i.e. => app.options('/api/v1/tour/:id', cors())
+app.options('*', cors());
 
 app.use((req, res, next) => {
     res.setHeader(
@@ -54,18 +53,9 @@ app.use(express.static(path.join(__dirname,'public')));
 app.use(express.json({
     limit : '10kb'
 }));
-
-
-const cookieOptions = {
-    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRATION * 24 * 60 * 60 * 1000), // Çerezin geçerlilik süresini hesaplar
-    httpOnly: true, // Çerezi yalnızca HTTP istekleriyle erişilebilir yapar (JavaScript tarafından okunamaz)
-    sameSite: process.env.NODE_ENV === 'development' ? 'Lax' : 'None', // Geliştirme ve üretim ortamlarına göre sameSite politikası
-};
+app.use(express.urlencoded({ extended: true, limit: '10kb' })); //This allows us to parse the data coming from forms. The extended option allows for more complex data
 app.use(cookieParser());
-app.get('/set-cookie', (req, res) => {
-    res.cookie('myCookie', 'cookieValue',cookieOptions  );
-    res.send('Cookie has been set!');
-});
+
 // for limit server requests for attacks.
 const limiter = rateLimit({
     max : 100,
@@ -91,11 +81,9 @@ app.use(hpp({
         'duration','ratingsQuantity','ratingsAverage','maxGroupSize','difficulty','price'
     ]
 }));
-// Body parser , reading data from body into req.body
-app.use(cors({
-    origin: 'http://localhost:3000', // İstemci adresiniz
-    credentials: true, // Çerezlerin gönderilmesine izin ver
-}));
+
+app.use(compression());
+
 // for devolopment login
 if(process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'));
@@ -107,7 +95,6 @@ app.use((req, res, next) => {
         // console.log(req.headers);
     next();    
 });
-app.use(cors())
 // 3) Routes
 app.use('/',viewRouter);
 app.use('/api/v1/tours',tourRouter);
