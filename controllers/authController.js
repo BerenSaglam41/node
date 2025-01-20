@@ -15,8 +15,9 @@ const createSendToken = (user, statusCode, res) => {
     const token = signToken(user._id);
     const cookieOptions = {
         expires: new Date(expiryDate),
-        httpOnly: true, //This makes it so the token cannot be manipulated by the browser (XSS attacks) //Cannot be deleted either
+        httpOnly: true,
         secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
+        sameSite: 'none',  // Cross-site cookie set edilebilmesi için
       };
     if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
     res.cookie('jwt', token, cookieOptions);

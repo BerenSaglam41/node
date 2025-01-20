@@ -21,13 +21,17 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 // ***********************************
 
-
 app.set('view engine','pug');
 app.set('views',path.join(__dirname,'views'));
 
 // Access-control-origin-header => *
-app.use(cors());
-
+app.use(
+    cors({
+      origin: 'http://localhost:3001', 
+      credentials: true
+    })
+  );
+  
 //This is for more 'complex' routes other than GET and POST - This will handle PATCH and DELETE  etc..
 // We can also do this for individual routes i.e. => app.options('/api/v1/tour/:id', cors())
 app.options('*', cors());
