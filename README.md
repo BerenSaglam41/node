@@ -1,6 +1,7 @@
 # Natours Node.js
 
 If you want to use this code, create a `config.env` file with the following variables:
+***Sorry for some issues in code***
 
 ```plaintext
 NODE_ENV = development
