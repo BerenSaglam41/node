@@ -58,7 +58,6 @@ exports.logout = (req,res)=>{
         status : 'Success'
     })
 };
-
 exports.protect = catchAsync(async (req, res, next) => {
     let token;
     // 1) Getting token and check if it's there
@@ -83,13 +82,11 @@ exports.protect = catchAsync(async (req, res, next) => {
     }
     // updating req.user data to currentusersdata for using on the next functions
     req.user = currentUser;
-    res.locals.user = currentUser;
     next();
 });
 
-exports.isLoggedin = async (req, res, next) => {
+exports.isLoggedin = catchAsync(async (req, res, next) => {
     if (req.cookies.jwt) {
-        try{
         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
         // 1) Check if user still exists
         const currentUser = await User.findById(decoded.id);
@@ -103,14 +100,9 @@ exports.isLoggedin = async (req, res, next) => {
         // Kullanıcı doğrulandı, user bilgisi yerel olarak ayarlanır
         res.locals.user = currentUser;
         return next(); // İşlem tamam, bir sonraki middleware'e geç
-        }
-        catch(err){
-            return next();
-        }
     }
-    
     next(); // Eğer çerez yoksa bir sonraki middleware'e geç
-};
+});
 
 
 

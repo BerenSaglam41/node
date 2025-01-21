@@ -13,6 +13,5 @@ const logout = async() =>{
 
 const logOutBtn = document.querySelector('.nav__el--logout');
 if(logOutBtn){
-    console.log("ifin ici");
     logOutBtn.addEventListener('click',logout)
 };
