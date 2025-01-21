@@ -59,6 +59,7 @@ app.use(express.json({
 }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' })); //This allows us to parse the data coming from forms. The extended option allows for more complex data
 app.use(cookieParser());
+app.use(express.urlencoded({extended : true,limit :"10kb" }));
 
 // for limit server requests for attacks.
 const limiter = rateLimit({
