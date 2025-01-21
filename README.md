@@ -7,6 +7,8 @@ If you want to use this code, create a `config.env` file with the following vari
 ---
 
 ### Postman Links
+  - **AUTHORİZATİON--Script**:  
+  `Bearer Token` - `pm.environment.set("jwt",pm.response.json().token);`
 
 - **Get all tours**:  
   `GET` - `{{URL}}/api/v1/tours`
@@ -82,6 +84,11 @@ If you want to use this code, create a `config.env` file with the following vari
 
 - **Reset Password**:  
   `PATCH` - `{{URL}}/api/v1/users/resetPassword/:token`
+  
+- **Enviroment**:  
+  `URL` - `http://localhost:3001/`
+  `jwt` - `{{URL}}/api/v1/users/resetPassword/:token`
+  `password` - `test1234`
 
 ---
 
