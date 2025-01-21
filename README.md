@@ -107,7 +107,7 @@ EMAIL_PASSWORD = <Yours>
 EMAIL_HOST = <Yours>
 EMAIL_PORT = <Yours>
 EMAIL_FROM = <Yours>
-
+```
 Site PHotos 
 
 ![Image](https://github.com/user-attachments/assets/4637b2d0-1abb-4a45-962d-34fa35d8c875)
