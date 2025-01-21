@@ -9,7 +9,7 @@ const updateSettings =async (data,type) =>{
             data
         });
         console.log(res.data);
-        if (res.data.status === 'success') {
+        if (res.data.status === 'Succes') {
             alert(`${type} Updated Successfully! Please Refresh The Page`);
         }
     }
