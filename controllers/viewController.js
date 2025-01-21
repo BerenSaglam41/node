@@ -7,8 +7,7 @@ exports.getoverView = catchAsync(async(req,res)=>{
     // 1) Get tour data from collection
     const tours = await Tour.find();
     // 2) Build template
-
-    // 3)Render the template using data from 1)
+    // 3
     res.status(200).render('overview',{
         title : 'All Tours',
         tours
@@ -40,7 +39,6 @@ exports.getAccount = async(req,res)=>{
     title : 'Your account'
   });
 };
-
 exports.updateUserData = catchAsync(async(req,res,next)=>{
   console.log("selam");
     const updatedUser = await User.findByIdAndUpdate(
@@ -54,7 +52,6 @@ exports.updateUserData = catchAsync(async(req,res,next)=>{
       runValidators: true
     }
   );
-
   res.status(200).render('account', {
     title: 'Your account',
     user: updatedUser
