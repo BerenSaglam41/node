@@ -3,7 +3,6 @@ const router = express.Router();
 const userControllers = require('./../controllers/userController');
 const authController = require('./../controllers/authController');
 
-
 router.route('/login')
     .post(authController.login);
 router.get('/logout',authController.logout);
@@ -23,7 +22,7 @@ router.get('/me',
 router.route('/deleteMe')
     .delete(userControllers.deleteMe);
 router.route('/updateMe')
-    .patch(userControllers.updateMe)
+    .patch(userControllers.uploadUserPhoto,userControllers.resizeUserPhoto,userControllers.updateMe)
 router.route('/updateMyPassword')
     .patch(authController.updatePassword);
 
