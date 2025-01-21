@@ -1,35 +1,91 @@
 # Natours Node.js
 
 If you want to use this code, create a `config.env` file with the following variables:
+
 ***Sorry for some issues in code***
 
-If you want to sign in there is postman links: 
-Get all tours - GET - {{URL}}api/v1/tours
-Get Tour By ıd - GET - {{URL}}api/v1/tours/:ID
-Top 5 CHEAP TOUR - GET - {{URL}}api/v1/tours/top-5-cheap
-Tour Stats - GET - {{URL}}api/v1/tours/tour-stats
-Create a New Tour - POST - {{URL}}api/v1/tours
-Update a Tour - PATCH - {{URL}}api/v1/tours/:ID
-Delete a Tour - DELETE - {{URL}}api/v1/tours/:ID
-Get All Reviews - GET - {{URL}}api/v1/reviews/
-Get Review - GET -{{URL}}api/v1/reviews/:ID
-Create Review - POST -  {{URL}}api/v1/reviews/:ID
-Update Review - PATCH - {{URL}}api/v1/reviews/:ID
-Delete - Review - DELETE -{{URL}}api/v1/reviews/:ID
-Get Reviews for on tour - GET - {{URL}}api/v1/tours/:ID/reviews
-Create new Review on a Tour - PATCH - {{URL}}api/v1/tours/:ID/reviews
-Get all users - GET - {{URL}}api/v1/users
-Get user - GET - {{URL}}api/v1/users/:ID
-Get current user - GET - {{URL}}api/v1/users/me
-Update current user data - PATCH - {{URL}}api/v1/users/updateMe
-Delete user - DELETE - {{URL}}api/v1/users/:ID
-Delete current user - DELETE - {{URL}}api/v1/users/deleteMe
-Sign up - POST - {{URL}}api/v1/users/signup
-Login - POST - {{URL}}api/v1/users/login
-Forgot Password - POST - {{URL}}api/v1/users/forgotPassword
-Update current Password - PATCH - {{URL}}api/v1/users/updateMyPassword
-Reset Password - PATCH - {{URL}}api/v1/users/resetPassword/:token
+---
 
+### Postman Links
+
+- **Get all tours**:  
+  `GET` - `{{URL}}/api/v1/tours`
+
+- **Get Tour By ID**:  
+  `GET` - `{{URL}}/api/v1/tours/:ID`
+
+- **Top 5 CHEAP TOUR**:  
+  `GET` - `{{URL}}/api/v1/tours/top-5-cheap`
+
+- **Tour Stats**:  
+  `GET` - `{{URL}}/api/v1/tours/tour-stats`
+
+- **Create a New Tour**:  
+  `POST` - `{{URL}}/api/v1/tours`
+
+- **Update a Tour**:  
+  `PATCH` - `{{URL}}/api/v1/tours/:ID`
+
+- **Delete a Tour**:  
+  `DELETE` - `{{URL}}/api/v1/tours/:ID`
+
+- **Get All Reviews**:  
+  `GET` - `{{URL}}/api/v1/reviews/`
+
+- **Get Review**:  
+  `GET` - `{{URL}}/api/v1/reviews/:ID`
+
+- **Create Review**:  
+  `POST` - `{{URL}}/api/v1/reviews/:ID`
+
+- **Update Review**:  
+  `PATCH` - `{{URL}}/api/v1/reviews/:ID`
+
+- **Delete Review**:  
+  `DELETE` - `{{URL}}/api/v1/reviews/:ID`
+
+- **Get Reviews for a Tour**:  
+  `GET` - `{{URL}}/api/v1/tours/:ID/reviews`
+
+- **Create a New Review on a Tour**:  
+  `PATCH` - `{{URL}}/api/v1/tours/:ID/reviews`
+
+- **Get All Users**:  
+  `GET` - `{{URL}}/api/v1/users`
+
+- **Get User**:  
+  `GET` - `{{URL}}/api/v1/users/:ID`
+
+- **Get Current User**:  
+  `GET` - `{{URL}}/api/v1/users/me`
+
+- **Update Current User Data**:  
+  `PATCH` - `{{URL}}/api/v1/users/updateMe`
+
+- **Delete User**:  
+  `DELETE` - `{{URL}}/api/v1/users/:ID`
+
+- **Delete Current User**:  
+  `DELETE` - `{{URL}}/api/v1/users/deleteMe`
+
+- **Sign Up**:  
+  `POST` - `{{URL}}/api/v1/users/signup`
+
+- **Login**:  
+  `POST` - `{{URL}}/api/v1/users/login`
+
+- **Forgot Password**:  
+  `POST` - `{{URL}}/api/v1/users/forgotPassword`
+
+- **Update Current Password**:  
+  `PATCH` - `{{URL}}/api/v1/users/updateMyPassword`
+
+- **Reset Password**:  
+  `PATCH` - `{{URL}}/api/v1/users/resetPassword/:token`
+
+---
+
+### Config.env Variables
 ```plaintext
 NODE_ENV = development
 PORT = 3001
@@ -44,7 +100,7 @@ EMAIL_PASSWORD = <Yours>
 EMAIL_HOST = <Yours>
 EMAIL_PORT = <Yours>
 EMAIL_FROM = <Yours>
-```
+
 Site PHotos 
 
 ![Image](https://github.com/user-attachments/assets/4637b2d0-1abb-4a45-962d-34fa35d8c875)
