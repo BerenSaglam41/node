@@ -49,6 +49,16 @@ exports.login = catchAsync(async (req, res, next) => {
     createSendToken(user, 200, res);
 });
 
+exports.logout = (req,res)=>{
+    res.cookie('jwt','loggedout',{
+        expires : new Date(Date.now()+10*1000),
+        httpOnly : true
+    });
+    res.status(200).json({
+        status : 'Success'
+    })
+};
+
 exports.protect = catchAsync(async (req, res, next) => {
     let token;
     // 1) Getting token and check if it's there
@@ -75,6 +85,33 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.user = currentUser;
     next();
 });
+
+exports.isLoggedin = async (req, res, next) => {
+    if (req.cookies.jwt) {
+        try{
+        const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+        // 1) Check if user still exists
+        const currentUser = await User.findById(decoded.id);
+        if (!currentUser) {
+            return next(); // Kullanıcı yoksa middleware'den çık
+        }
+        // 2) Check if user changed password after the JWT was issued 
+        if (currentUser.changedPasswordAfter(decoded.iat)) {
+            return next(); // Şifre değişmişse middleware'den çık
+        }
+        // Kullanıcı doğrulandı, user bilgisi yerel olarak ayarlanır
+        res.locals.user = currentUser;
+        return next(); // İşlem tamam, bir sonraki middleware'e geç
+        }
+        catch(err){
+            return next();
+        }
+    }
+    
+    next(); // Eğer çerez yoksa bir sonraki middleware'e geç
+};
+
+
 
 exports.restrictTo = (...roles) => {
     return (req, res, next) => {
